@@ -1,5 +1,4 @@
-import StageScene from "../StageScene.js"
-const config = {
+export default {
   map: [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -13,5 +12,3 @@ const config = {
     [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ]
 }
-
-export default new StageScene(config)
