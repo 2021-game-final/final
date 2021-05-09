@@ -1,9 +1,15 @@
 import WelcomeScene from './WelcomeScene.js'
-import GameScene from './GameScene.js'
+import stage1 from './stages/Stage1.js'
+import stage2 from './stages/Stage2.js'
+import stage3 from './stages/Stage3.js'
 
 (function () {
   const welcomeScene = new WelcomeScene()
-  const gameScene = new GameScene()
+  const stages = [
+    stage1,
+    stage2,
+    stage3
+  ]
 
   const config = {
     type: Phaser.AUTO,
@@ -19,7 +25,9 @@ import GameScene from './GameScene.js'
   const game = new Phaser.Game(config);
 
   game.scene.add('welcomeScene', welcomeScene);
-  game.scene.add('gameScene', gameScene);
+  stages.forEach((scene, i) => {
+    game.scene.add(`stage-${i}`, scene);
+  })  
 
   game.scene.start('welcomeScene');
 })()

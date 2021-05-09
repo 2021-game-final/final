@@ -16,7 +16,7 @@ class WelcomeScene extends Phaser.Scene {
       this.add.rectangle(0, 0, 100, 50, 0x202020)
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => {
-          this.scene.start("gameScene");
+          this.scene.start("stage-0");
         }),
       this.add.text(0, 0, '開始').setOrigin(0.5)
     ])
