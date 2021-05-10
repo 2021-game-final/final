@@ -1,6 +1,4 @@
-const GRID_SIZE = 64;
-const GRASS = 0x98cc6e;
-const ROAD = 0xf2d279;
+import {STATUS_BAR_HEIGHT, GRID_SIZE, GRASS, ROAD} from "./Constants.js"
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -33,6 +31,8 @@ class GameScene extends Phaser.Scene {
   createStatusBar() {
     this.statusBarContainerEl = document.createElement('div');
     this.statusBarContainerEl.id = "status-bar-container";
+    this.statusBarContainerEl.style.width = "100%";
+    this.statusBarContainerEl.style.height = `${STATUS_BAR_HEIGHT}px`;
 
     this.statusBarEl = document.createElement('div');
     this.statusBarEl.id = "status-bar"

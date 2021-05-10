@@ -1,5 +1,6 @@
 import WelcomeScene from './WelcomeScene.js'
 import StageScene from "./StageScene.js"
+import {STATUS_BAR_HEIGHT} from "./Constants.js"
 
 (function () {
   const config = {
@@ -9,7 +10,7 @@ import StageScene from "./StageScene.js"
     },
     type: Phaser.AUTO,
     width: 1024,
-    height: 704,
+    height: 640 + STATUS_BAR_HEIGHT,
     physics: {
       default: "arcade",
       arcade: {
