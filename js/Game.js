@@ -3,9 +3,13 @@ import StageScene from "./StageScene.js"
 
 (function () {
   const config = {
+    parent: "game",
+    dom: {
+        createContainer: true
+    },
     type: Phaser.AUTO,
     width: 1024,
-    height: 640,
+    height: 704,
     physics: {
       default: "arcade",
       arcade: {

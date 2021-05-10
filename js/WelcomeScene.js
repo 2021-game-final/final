@@ -9,7 +9,7 @@ class WelcomeScene extends Phaser.Scene {
     const { width: w, height: h } = this.game.config
     this.add.rectangle(w / 2, h / 2, w, h, 0x3e3e3e)
 
-    this.add.text(w / 2, h / 2 - 100, '你好', {
+    this.add.text(w / 2, h / 2 - 100, '塔防遊戲', {
       fontFamily: '"Noto Sans TC", sans-serif',
       fontSize: '72px'
     }).setOrigin(0.5);
