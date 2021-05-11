@@ -1,16 +1,16 @@
 import WelcomeScene from './WelcomeScene.js'
 import StageScene from "./StageScene.js"
-import {STATUS_BAR_HEIGHT} from "./Constants.js"
+import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Constants.js"
 
 (function () {
   const config = {
     parent: "game",
     dom: {
-        createContainer: true
+      createContainer: true
     },
     type: Phaser.AUTO,
-    width: 1024,
-    height: 640 + STATUS_BAR_HEIGHT,
+    width: MAP_WIDTH,
+    height: MAP_HEIGHT + STATUS_BAR_HEIGHT + TANK_BAR_HEIGHT,
     physics: {
       default: "arcade",
       arcade: {
@@ -22,7 +22,7 @@ import {STATUS_BAR_HEIGHT} from "./Constants.js"
 
   game.scene.add('welcomeScene', new WelcomeScene());
   game.scene.add('stageScene', new StageScene());
-  
+
 
   game.scene.start('welcomeScene');
 })()

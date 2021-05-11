@@ -1,8 +1,15 @@
-import {STATUS_BAR_HEIGHT, GRID_SIZE, GRASS, ROAD} from "./Constants.js"
+import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT, GRID_SIZE, GRASS, ROAD } from "./Constants.js"
+import TankData from './TankData.js'
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super()
+  }
+
+  preload() {
+    this.load.image("tank-brown", "/images/tank_1.png");
+    this.load.image("tank-red", "/images/tank_2.png");
+    this.load.image("tank-blue", "/images/tank_3.png");
   }
 
   create({
@@ -13,7 +20,7 @@ class GameScene extends Phaser.Scene {
         const color = column === 0 ? GRASS : ROAD;
         this.add.rectangle(
           columnIndex * GRID_SIZE,
-          rowIndex * GRID_SIZE +64,
+          rowIndex * GRID_SIZE + 64,
           GRID_SIZE,
           GRID_SIZE,
           color
@@ -21,9 +28,16 @@ class GameScene extends Phaser.Scene {
       })
     });
 
+    this.tanksData = [
+      new TankData("一級砲台", "tank-brown"),
+      new TankData("二級砲台", "tank-red"),
+      new TankData("三級砲台", "tank-blue")
+    ];
+
     this.createStatusBar();
+    this.createTankBar();
     setInterval(() => {
-      this.money-=5;
+      this.money -= 5;
     }, 1000)
   }
 
@@ -50,6 +64,33 @@ class GameScene extends Phaser.Scene {
     this.liveEl.innerText = "❤: 10";
     this.statusBarEl.appendChild(this.liveEl);
     const domElement = this.add.dom(0, 0, this.statusBarContainerEl).setOrigin(0);
+  }
+
+  // 砲台列表
+  createTankBar() {
+    const kuangKuangs = []
+    for (let i = 0; i < 12; i++) {
+      const x = 40 + i * 80;
+      const kuangKuang = this.add.container(x, 16, [
+        this.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0x424242).setOrigin(0),
+        ...i < this.tanksData.length
+          ? [
+            this.add.image(0, 0, this.tanksData[i].image)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerup', () => {
+                console.log("hi");
+              })
+              .setOrigin(0)
+          ]
+          : []
+      ])
+      kuangKuangs.push(kuangKuang);
+
+    }
+    this.add.container(0, STATUS_BAR_HEIGHT + MAP_HEIGHT, [
+      this.add.rectangle(0, 0, MAP_WIDTH, TANK_BAR_HEIGHT, 0x5a5a5a).setOrigin(0),
+      ...kuangKuangs
+    ])
   }
 
   update() {
