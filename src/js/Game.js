@@ -1,3 +1,4 @@
+import { Game, AUTO } from 'phaser'
 import WelcomeScene from './WelcomeScene.js'
 import StageScene from "./StageScene.js"
 import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Constants.js"
@@ -8,7 +9,7 @@ import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Con
     dom: {
       createContainer: true
     },
-    type: Phaser.AUTO,
+    type: AUTO,
     width: MAP_WIDTH,
     height: MAP_HEIGHT + STATUS_BAR_HEIGHT + TANK_BAR_HEIGHT,
     physics: {
@@ -18,7 +19,7 @@ import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Con
       }
     }
   };
-  const game = new Phaser.Game(config);
+  const game = new Game(config);
 
   game.scene.add('welcomeScene', new WelcomeScene());
   game.scene.add('stageScene', new StageScene());

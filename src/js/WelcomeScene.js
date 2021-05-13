@@ -1,6 +1,7 @@
+import { Scene } from 'phaser'
 import stage1Data from "./stages/Stage1.js"
 
-class WelcomeScene extends Phaser.Scene {
+class WelcomeScene extends Scene {
   constructor() {
     super()
   }
