@@ -1,0 +1,23 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2021-game-final/final.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2021-game-final/final/issues"
+  },
+  "homepage": "https://github.com/2021-game-final/final#readme",
+  "devDependencies": {
+    "vite": "^2.3.2"
+  }
+}

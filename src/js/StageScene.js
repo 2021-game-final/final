@@ -1,5 +1,8 @@
 import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT, GRID_SIZE, GRASS, ROAD } from "./Constants.js"
 import TankData from './TankData.js'
+import tank_1 from '../images/tank_1.png'
+import tank_2 from '../images/tank_2.png'
+import tank_3 from '../images/tank_3.png'
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -7,9 +10,9 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("tank-brown", "/images/tank_1.png");
-    this.load.image("tank-red", "/images/tank_2.png");
-    this.load.image("tank-blue", "/images/tank_3.png");
+    this.load.image("tank-brown", tank_1);
+    this.load.image("tank-red", tank_2);
+    this.load.image("tank-blue", tank_3);
   }
 
   create({
