@@ -1,7 +1,7 @@
 class TankData {
-  constructor(name, image) {
-    this.name = name;
-    this.image = image;
+  constructor (name, image) {
+    this.name = name
+    this.image = image
   }
 }
 

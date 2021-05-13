@@ -1,11 +1,11 @@
 import { Game, AUTO } from 'phaser'
 import WelcomeScene from './WelcomeScene.js'
-import StageScene from "./StageScene.js"
-import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Constants.js"
+import StageScene from './StageScene.js'
+import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from './Constants.js'
 
 (function () {
   const config = {
-    parent: "game",
+    parent: 'game',
     dom: {
       createContainer: true
     },
@@ -13,17 +13,16 @@ import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from "./Con
     width: MAP_WIDTH,
     height: MAP_HEIGHT + STATUS_BAR_HEIGHT + TANK_BAR_HEIGHT,
     physics: {
-      default: "arcade",
+      default: 'arcade',
       arcade: {
         debug: false
       }
     }
-  };
-  const game = new Game(config);
+  }
+  const game = new Game(config)
 
-  game.scene.add('welcomeScene', new WelcomeScene());
-  game.scene.add('stageScene', new StageScene());
+  game.scene.add('welcomeScene', new WelcomeScene())
+  game.scene.add('stageScene', new StageScene())
 
-
-  game.scene.start('welcomeScene');
+  game.scene.start('welcomeScene')
 })()
