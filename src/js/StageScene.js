@@ -1,15 +1,13 @@
 import { Scene } from 'phaser'
 import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT, GRID_SIZE, GRASS, ROAD } from './Constants.js'
-import TankData from './TankData.js'
-import tank1 from '../images/tank_1.png'
-import tank2 from '../images/tank_2.png'
-import tank3 from '../images/tank_3.png'
+import { tankDatas } from './TankData.js'
 
 class GameScene extends Scene {
   preload () {
-    this.load.image('tank-brown', tank1)
-    this.load.image('tank-red', tank2)
-    this.load.image('tank-blue', tank3)
+    tankDatas.forEach((tank) => {
+      this.load.image(tank.imageKey, tank.image)
+      console.log(tank)
+    })
   }
 
   create ({
@@ -27,12 +25,6 @@ class GameScene extends Scene {
         ).setOrigin(0)
       })
     })
-
-    this.tanksData = [
-      new TankData('一級砲台', 'tank-brown'),
-      new TankData('二級砲台', 'tank-red'),
-      new TankData('三級砲台', 'tank-blue')
-    ]
 
     this.createStatusBar()
     this.createTankBar()
@@ -73,9 +65,9 @@ class GameScene extends Scene {
       const x = 40 + i * 80
       const kuangKuang = this.add.container(x, 16, [
         this.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0x424242).setOrigin(0),
-        ...i < this.tanksData.length
+        ...i < tankDatas.length
           ? [
-              this.add.image(0, 0, this.tanksData[i].image)
+              this.add.image(0, 0, tankDatas[i].imageKey)
                 .setInteractive({ useHandCursor: true })
                 .on('pointerup', () => {
                   console.log('hi')
