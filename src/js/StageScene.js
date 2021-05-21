@@ -72,6 +72,16 @@ class GameScene extends Scene {
                 .on('pointerup', () => {
                   console.log('hi')
                 })
+                .on('pointerover', () => {
+                  this.tankIntro.setVisible(true)
+                  this.tankIntroContentEl.innerHTML = `${tankDatas[i].name}<br>射擊速度<br>攻擊力<br>特殊功能?緩速<br>價錢`
+                })
+                .on('pointermove', ({ x, y }) => {
+                  this.tankIntro.setX(x).setY(y)
+                })
+                .on('pointerout', () => {
+                  this.tankIntro.setVisible(false)
+                })
                 .setOrigin(0)
             ]
           : []
@@ -82,6 +92,16 @@ class GameScene extends Scene {
       this.add.rectangle(0, 0, MAP_WIDTH, TANK_BAR_HEIGHT, 0x5a5a5a).setOrigin(0),
       ...kuangKuangs
     ])
+
+    this.tankIntroContainerEl = document.createElement('div')
+    this.tankIntroContainerEl.id = 'tank-intro-container'
+    this.tankIntroBgEl = document.createElement('div')
+    this.tankIntroBgEl.id = 'tank-intro-bg'
+    this.tankIntroContainerEl.appendChild(this.tankIntroBgEl)
+    this.tankIntroContentEl = document.createElement('div')
+    this.tankIntroContentEl.id = 'tank-intro-content'
+    this.tankIntroBgEl.appendChild(this.tankIntroContentEl)
+    this.tankIntro = this.add.dom(0, 0, this.tankIntroContainerEl).setOrigin(0, 1)
   }
 
   update () {
