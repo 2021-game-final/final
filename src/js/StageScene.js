@@ -6,31 +6,35 @@ class GameScene extends Scene {
   preload () {
     tankDatas.forEach((tank) => {
       this.load.image(tank.imageKey, tank.image)
-      console.log(tank)
     })
   }
 
   create ({
     map
   }) {
+    this.createMapBg(map)
+    this.createStatusBar()
+    this.createTankBar()
+    setInterval(() => {
+      this.money -= 5
+    }, 1000)
+  }
+
+  createMapBg (map) {
+    this.mapBg = this.add.container(0, 0)
     map.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => {
         const color = column === 0 ? GRASS : ROAD
-        this.add.rectangle(
+        const mapGrid = this.add.rectangle(
           columnIndex * GRID_SIZE,
           rowIndex * GRID_SIZE + 64,
           GRID_SIZE,
           GRID_SIZE,
           color
         ).setOrigin(0)
+        this.mapBg.add(mapGrid)
       })
     })
-
-    this.createStatusBar()
-    this.createTankBar()
-    setInterval(() => {
-      this.money -= 5
-    }, 1000)
   }
 
   // TODO: 狀態列的更新
