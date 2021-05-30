@@ -4,18 +4,27 @@ import tank3 from '../images/tank_3.png'
 
 export const tankDatas = [
   {
+    mapObjId: 0,
     name: '一級砲台',
     image: tank1,
-    imageKey: 'tank-brown'
+    imageKey: 'tank-brown',
+    range: 6,
+    price: 50
   },
   {
+    mapObjId: 1,
     name: '二級砲台',
     image: tank2,
-    imageKey: 'tank-red'
+    imageKey: 'tank-red',
+    range: 8,
+    price: 100
   },
   {
+    mapObjId: 2,
     name: '三級砲台',
     image: tank3,
-    imageKey: 'tank-blue'
+    imageKey: 'tank-blue',
+    range: 10,
+    price: 150
   }
 ]
