@@ -1,5 +1,5 @@
 import { Scene } from 'phaser'
-import stage1Data from './stages/Stage1.js'
+import stagesData from '../../data/stages/Index'
 
 class WelcomeScene extends Scene {
   create () {
@@ -15,7 +15,7 @@ class WelcomeScene extends Scene {
       this.add.rectangle(0, 0, 100, 50, 0x202020)
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => {
-          this.scene.start('stageScene', stage1Data)
+          this.scene.start('stageScene', stagesData[0])
         }),
       this.add.text(0, 0, '開始').setOrigin(0.5)
     ])

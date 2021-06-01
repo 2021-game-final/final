@@ -1,6 +1,6 @@
 import { Game, AUTO } from 'phaser'
-import WelcomeScene from './WelcomeScene.js'
-import StageScene from './StageScene.js'
+import WelcomeScene from './scenes/welcome/WelcomeScene'
+import StageScene from './scenes/stage/StageScene'
 import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from './Constants.js'
 
 (function () {
