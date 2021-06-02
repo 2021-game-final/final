@@ -52,6 +52,7 @@ export default class StageScene extends Scene {
     // TODO 玩家按「START」即開放敵人進入地圖 (不能再新增砲台)
     const onStartClickListener = () => {
       console.log('hiii')
+      this.stageMap.addEnemy(stageData.mapData.start[0], stageData.mapData.start[1])
     }
     this.ui.tanksBar.onStartClick(onStartClickListener)
   }

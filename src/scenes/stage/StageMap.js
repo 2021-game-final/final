@@ -1,4 +1,6 @@
 import { STATUS_BAR_HEIGHT, GRID_SIZE, COLOR_ROAD, COLOR_GRASS, ROAD, GRASS } from '../../Constants'
+import Tank from './Tank'
+import Enemy from './Enemy'
 
 export default class StageMap {
   /**
@@ -19,6 +21,7 @@ export default class StageMap {
 
     this.mainContainer = this.scene.add.container(0, STATUS_BAR_HEIGHT)
     this._createBackground(mapData)
+    this.path = this._createPath(mapData)
   }
 
   /**
@@ -46,8 +49,93 @@ export default class StageMap {
         return grid
       })
     })
-    container.add(gridMap.flat())
+    container.add([
+      ...gridMap.flat(),
+      this.scene.add.container(mapData.start[1] * GRID_SIZE, mapData.start[0] * GRID_SIZE, [
+        this.scene.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0xe6c773).setOrigin(0),
+        this.scene.add.text(GRID_SIZE / 2, GRID_SIZE / 2, 'START', {
+          fontFamily: '"Noto Sans TC", sans-serif',
+          fontSize: '15px',
+          color: '#6e5e31'
+        }).setOrigin(0.5)
+      ]),
+      this.scene.add.container(mapData.end[1] * GRID_SIZE, mapData.end[0] * GRID_SIZE, [
+        this.scene.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0xe6c773).setOrigin(0),
+        this.scene.add.text(GRID_SIZE / 2, GRID_SIZE / 2, 'END', {
+          fontFamily: '"Noto Sans TC", sans-serif',
+          fontSize: '15px',
+          color: '#6e5e31'
+        }).setOrigin(0.5)
+      ])
+    ])
     this.mainContainer.add(container)
+  }
+
+  /**
+   *
+   *
+   * @param {import('../../data/stages/Index').MapData} mapData
+   * @return {[number, number][]}
+   * @memberof StageMap
+   */
+  _findPath ({ matrix, start }) {
+    const allCoords = matrix
+      .flatMap((row, rowIndex) => {
+        return row.map((column, columnIndex) => {
+          return [column, rowIndex, columnIndex]
+        })
+      })
+      .filter((tuple) => {
+        return tuple[0] === ROAD
+      })
+      .map((tuple) => {
+        const [_, ...coord] = tuple
+        return coord
+      })
+
+    const path = []
+    while (allCoords.length > 0) {
+      if (path.length === 0) {
+        const index = allCoords.findIndex((coord) => start[0] === coord[0] && start[1] === coord[1])
+        path.push(...allCoords.splice(index, 1))
+      }
+      const last = path.slice(-1)[0]
+      const index = [
+        allCoords.findIndex((coord) => (last[0] + 1) === coord[0] && last[1] === coord[1]),
+        allCoords.findIndex((coord) => (last[0] - 1) === coord[0] && last[1] === coord[1]),
+        allCoords.findIndex((coord) => last[0] === coord[0] && (last[1] - 1) === coord[1]),
+        allCoords.findIndex((coord) => last[0] === coord[0] && (last[1] + 1) === coord[1])
+      ].find((i) => i !== -1)
+      path.push(...allCoords.splice(index, 1))
+    }
+    return path
+  }
+
+  /**
+   *
+   *
+   * @param {import('../../data/stages/Index').MapData} mapData
+   * @memberof StageMap
+   */
+  _createPath (mapData) {
+    const pathData = this._findPath(mapData)
+    const graphics = this.scene.add.graphics()
+    const path = this.scene.add.path(0, 0)
+    pathData.map(([rowIndex, columnIndex]) => {
+      return [columnIndex * GRID_SIZE, rowIndex * GRID_SIZE]
+    })
+      .forEach(([_x, _y], index) => {
+        const x = _x + (GRID_SIZE / 2)
+        const y = _y + (GRID_SIZE / 2)
+        if (index === 0) {
+          path.moveTo(x, y)
+          return
+        }
+        path.lineTo(x, y)
+      })
+    graphics.lineStyle(3, 0xffffff, 0.1)
+    path.draw(graphics)
+    this.mainContainer.add(graphics)
   }
 
   /**
@@ -57,9 +145,7 @@ export default class StageMap {
    * @param {number} columnIndex
    */
   addTank (tankData, rowIndex, columnIndex) {
-    const x = columnIndex * GRID_SIZE
-    const y = rowIndex * GRID_SIZE
-    const tank = this.scene.add.image(x, y, tankData.imageKey).setOrigin(0)
+    const tank = new Tank(this.scene, rowIndex, columnIndex, tankData)
     this.mainContainer.add(tank)
     this.tanks.add(tank)
     this.placingMatrix[rowIndex][columnIndex] = false
@@ -67,5 +153,10 @@ export default class StageMap {
 
   canPlaceAt (rowIndex, columnIndex) {
     return this.placingMatrix[rowIndex][columnIndex]
+  }
+
+  addEnemy (rowIndex, columnIndex) {
+    const enemy = new Enemy(this.scene, rowIndex, columnIndex)
+    this.mainContainer.add(enemy)
   }
 }
