@@ -61,8 +61,15 @@ export default class StageUI {
      * @type {OnTankClickListener[]}
      */
     const onTankClickListeners = []
+    /**
+     * @callback OnStartClickListener
+     */
+    /**
+     * @type {OnStartClickListener[]}
+     */
+    const onStartClickListeners = []
     const kuangKuangs = []
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 10; i++) {
       const x = 40 + i * 80
       const kuangKuang = this.scene.add.container(x, 16, [
         this.scene.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0x424242).setOrigin(0),
@@ -91,9 +98,26 @@ export default class StageUI {
       ])
       kuangKuangs.push(kuangKuang)
     }
+
+    const startButton = this.scene.add.container(840, 16, [
+      this.scene.add.rectangle(0, 0, GRID_SIZE * 2 + 40, GRID_SIZE, 0xe34d4d)
+        .setOrigin(0)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerup', () => {
+          onStartClickListeners.forEach((listener) => {
+            listener()
+          })
+        }),
+      this.scene.add.text((GRID_SIZE * 2 + 40) / 2, GRID_SIZE / 2, 'START', {
+        fontFamily: '"Noto Sans TC", sans-serif',
+        fontSize: '30px'
+      }).setOrigin(0.5)
+    ])
+
     this.scene.add.container(0, STATUS_BAR_HEIGHT + MAP_HEIGHT, [
       this.scene.add.rectangle(0, 0, MAP_WIDTH, TANK_BAR_HEIGHT, 0x5a5a5a).setOrigin(0),
-      ...kuangKuangs
+      ...kuangKuangs,
+      startButton
     ])
 
     return {
@@ -103,6 +127,13 @@ export default class StageUI {
        */
       onTankClick (listener) {
         onTankClickListeners.push(listener)
+      },
+      /**
+       *
+       * @param {OnStartClickListener} listener
+       */
+      onStartClick (listener) {
+        onStartClickListeners.push(listener)
       }
     }
   }

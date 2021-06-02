@@ -27,7 +27,7 @@ export default class StageScene extends Scene {
     this.money = stageData.money
     this.live = stageData.live
 
-    const listener1 = (tankData) => {
+    const onTankClickListener = (tankData) => {
       if (this.previewTankData === tankData) {
         this.ui.placingLayer.setVisible(false)
         this.previewTankData = null
@@ -38,16 +38,22 @@ export default class StageScene extends Scene {
       this.ui.placingLayer.updatePlacingGridMap(this.stageMap.placingMatrix)
       this.ui.placingLayer.setVisible(true)
     }
-    this.ui.tanksBar.onTankClick(listener1)
+    this.ui.tanksBar.onTankClick(onTankClickListener)
 
-    const listener2 = ({ rowIndex, columnIndex }) => {
+    const onPlacingGridClickListener = ({ rowIndex, columnIndex }) => {
       if (!this.stageMap.canPlaceAt(rowIndex, columnIndex)) return
       this.money -= this.previewTankData.price
       this.stageMap.addTank(this.previewTankData, rowIndex, columnIndex)
       this.ui.placingLayer.setVisible(false)
       this.previewTankData = null
     }
-    this.ui.placingLayer.onPlacingGridClick(listener2)
+    this.ui.placingLayer.onPlacingGridClick(onPlacingGridClickListener)
+
+    // TODO 玩家按「START」即開放敵人進入地圖 (不能再新增砲台)
+    const onStartClickListener = () => {
+      console.log('hiii')
+    }
+    this.ui.tanksBar.onStartClick(onStartClickListener)
   }
 
   get stage () {
