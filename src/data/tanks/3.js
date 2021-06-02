@@ -1,9 +1,11 @@
 import image from '../../assets/images/tank_3.png'
 
 export default {
-  name: '三級砲台',
+  name: '殺人鯨三級砲台',
   image: image,
   imageKey: 'tank-blue',
   range: 10,
+  speed: 3,
+  ability: '無',
   price: 150
 }

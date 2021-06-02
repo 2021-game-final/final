@@ -9,6 +9,8 @@ import tank3 from './3'
  * @property {string} image
  * @property {string} imageKey
  * @property {number} range
+ * @property {number} speed
+ * @property {string} ability
  * @property {number} price
  */
 export default [

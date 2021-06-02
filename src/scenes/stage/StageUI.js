@@ -161,7 +161,7 @@ export default class StageUI {
        * @param {import('../../data/tanks/Index').TankData} tankData
        */
       updateTankIntroText (tankData) {
-        contentEl.innerHTML = `${tankData.name}<br>射擊速度：<br>攻擊力：<br>特殊功能：緩速<br>價錢：${tankData.price}`
+        contentEl.innerHTML = `${tankData.name}<br>射擊速度：${tankData.speed}<br>射程範圍：${tankData.range}<br>特殊功能：${tankData.ability}<br>價錢：${tankData.price}`
       },
       updateTankIntroPosition ({ x, y }) {
         body.setPosition(x, y)
