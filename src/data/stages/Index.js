@@ -10,12 +10,15 @@ import stage3 from './3'
  * @property {[number, number]} end
  *
  */
+
 /**
  *
  * @typedef {Object} StageData
  * @property {number} stage
  * @property {number} money
  * @property {number} live
+ * @property {number} enemyAmount
+ * @property {number} enemyPeriod
  * @property {MapData} mapData
  *
  */

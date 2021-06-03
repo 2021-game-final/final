@@ -18,10 +18,17 @@ export default class StageMap {
       })
     })
     this.tanks = this.scene.add.group()
+    this.enemies = this.scene.add.group()
 
     this.mainContainer = this.scene.add.container(0, STATUS_BAR_HEIGHT)
     this._createBackground(mapData)
     this.path = this._createPath(mapData)
+  }
+
+  update (time, delta) {
+    this.enemies.children.iterate((enemy) => {
+      enemy.update(time, delta)
+    })
   }
 
   /**
@@ -89,7 +96,7 @@ export default class StageMap {
         return tuple[0] === ROAD
       })
       .map((tuple) => {
-        const [_, ...coord] = tuple
+        const [, ...coord] = tuple
         return coord
       })
 
@@ -133,9 +140,10 @@ export default class StageMap {
         }
         path.lineTo(x, y)
       })
-    graphics.lineStyle(3, 0xffffff, 0.1)
+    graphics.lineStyle(3, 0xffffff, 0)
     path.draw(graphics)
     this.mainContainer.add(graphics)
+    return path
   }
 
   /**
@@ -155,8 +163,26 @@ export default class StageMap {
     return this.placingMatrix[rowIndex][columnIndex]
   }
 
-  addEnemy (rowIndex, columnIndex) {
-    const enemy = new Enemy(this.scene, rowIndex, columnIndex)
+  /**
+   *
+   * @param {import('../../data/enemies').EnemyData} enemyData
+   * @param {number} rowIndex
+   * @param {number} columnIndex
+   */
+  addEnemy (enemyData, rowIndex, columnIndex) {
+    const enemy = new Enemy(this.scene, rowIndex, columnIndex, enemyData, this.path)
     this.mainContainer.add(enemy)
+    this.enemies.add(enemy)
+  }
+
+  addEnemies (enemyData, rowIndex, columnIndex, amount, period) {
+    let count = 0
+    const timer = setInterval(() => {
+      this.addEnemy(enemyData, rowIndex, columnIndex)
+      count += 1
+      if (count === amount) {
+        clearInterval(timer)
+      }
+    }, period)
   }
 }

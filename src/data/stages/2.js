@@ -1,7 +1,9 @@
 export default {
-  stage: 1,
+  stage: 2,
   money: 100,
-  live: 10,
+  live: 3,
+  enemyAmount: 14,
+  enemyPeriod: 1200,
   mapData: {
     matrix: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],

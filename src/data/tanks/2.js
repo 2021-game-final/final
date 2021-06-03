@@ -5,7 +5,7 @@ export default {
   image: image,
   imageKey: 'tank-red',
   range: 8,
-  speed: 2,
+  speed: 1.5,
   ability: '無',
   price: 100
 }

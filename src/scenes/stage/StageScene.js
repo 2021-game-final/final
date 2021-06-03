@@ -2,6 +2,7 @@ import { Scene } from 'phaser'
 import StageUI from './StageUI'
 import StageMap from './StageMap'
 import tanksData from '../../data/tanks/Index'
+import enemiesData from '../../data/enemies/Index'
 
 export default class StageScene extends Scene {
   preload () {
@@ -51,10 +52,19 @@ export default class StageScene extends Scene {
 
     // TODO 玩家按「START」即開放敵人進入地圖 (不能再新增砲台)
     const onStartClickListener = () => {
-      console.log('hiii')
-      this.stageMap.addEnemy(stageData.mapData.start[0], stageData.mapData.start[1])
+      this.stageMap.addEnemies(
+        enemiesData[this.stage - 1],
+        stageData.mapData.start[0],
+        stageData.mapData.start[1],
+        stageData.enemyAmount,
+        stageData.enemyPeriod
+      )
     }
     this.ui.tanksBar.onStartClick(onStartClickListener)
+  }
+
+  update (time, delta) {
+    this.stageMap.update(time, delta)
   }
 
   get stage () {
