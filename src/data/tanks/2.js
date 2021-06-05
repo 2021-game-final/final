@@ -4,7 +4,7 @@ export default {
   name: '金剛二級鸚鵡砲台',
   image: image,
   imageKey: 'tank-red',
-  range: 8,
+  range: 2,
   speed: 1.5,
   ability: '無',
   price: 100
