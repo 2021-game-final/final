@@ -12,10 +12,17 @@ export default class StageScene extends Scene {
   }
 
   create (stageData) {
+    // 放置模式：placing
+    // 戰鬥模式：battling
+    // 遊戲失敗：gameLoser
+    // 遊戲成功：gameWinner
+    this._status = 'placing'
+
     this._stage = 0
     this._money = 0
     this._live = 0
     this._previewTankData = null
+    this.stageData = stageData
 
     this.stageMap = new StageMap()
     this.ui = new StageUI()
@@ -39,6 +46,7 @@ export default class StageScene extends Scene {
       this.ui.placingLayer.updatePlacingGridMap(this.stageMap.placingMatrix)
       this.ui.placingLayer.setVisible(true)
     }
+
     this.ui.tanksBar.onTankClick(onTankClickListener)
 
     const onPlacingGridClickListener = ({ rowIndex, columnIndex }) => {
@@ -48,23 +56,47 @@ export default class StageScene extends Scene {
       this.ui.placingLayer.setVisible(false)
       this.previewTankData = null
     }
+
     this.ui.placingLayer.onPlacingGridClick(onPlacingGridClickListener)
 
-    // TODO 玩家按「START」即開放敵人進入地圖 (不能再新增砲台)
+    // TODO 玩家按「START」切換 status: battling
+    // 即開放敵人進入地圖 (不能再新增砲台)
     const onStartClickListener = () => {
-      this.stageMap.addEnemies(
-        enemiesData[this.stage - 1],
-        stageData.mapData.start[0],
-        stageData.mapData.start[1],
-        stageData.enemyAmount,
-        stageData.enemyPeriod
-      )
+      this.status = 'battling'
     }
+
     this.ui.tanksBar.onStartClick(onStartClickListener)
   }
 
   update (time, delta) {
     this.stageMap.update(time, delta)
+  }
+
+  get status () {
+    return this._status
+  }
+
+  set status (value) {
+    this._status = value
+    if (value === 'placing') {
+      // 砲台可以放
+      this.ui.unlock()
+    } else if (value === 'battling') {
+      // 敵人開始進地圖
+      this.stageMap.addEnemies(
+        enemiesData[this.stage - 1],
+        this.stageData.mapData.start[0],
+        this.stageData.mapData.start[1],
+        this.stageData.enemyAmount,
+        this.stageData.enemyPeriod
+      )
+      // 砲台跟START都不能按
+      this.ui.lock()
+    } else if (value === 'gameLoser') {
+      //
+    } else if (value === 'gameWinner') {
+      //
+    }
   }
 
   get stage () {

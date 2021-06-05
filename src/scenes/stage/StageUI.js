@@ -69,52 +69,56 @@ export default class StageUI {
      */
     const onStartClickListeners = []
     const kuangKuangs = []
+    const tanksButton = tanksData.map((tankData) => {
+      return this.scene.add.image(0, 0, tankData.imageKey)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', () => {
+          tankIntro.updateTankIntroText(tankData)
+          tankIntro.setVisible(true)
+        })
+        .on('pointerout', () => {
+          tankIntro.setVisible(false)
+        })
+        .on('pointermove', (pointer) => {
+          tankIntro.updateTankIntroPosition(pointer)
+        })
+        .on('pointerup', () => {
+          onTankClickListeners.forEach((listener) => {
+            listener(tankData)
+          })
+        })
+        .setOrigin(0)
+    })
     for (let i = 0; i < 10; i++) {
       const x = 40 + i * 80
       const kuangKuang = this.scene.add.container(x, 16, [
         this.scene.add.rectangle(0, 0, GRID_SIZE, GRID_SIZE, 0x424242).setOrigin(0),
         ...i < tanksData.length
           ? [
-              this.scene.add.image(0, 0, tanksData[i].imageKey)
-                .setInteractive({ useHandCursor: true })
-                .on('pointerover', () => {
-                  tankIntro.updateTankIntroText(tanksData[i])
-                  tankIntro.setVisible(true)
-                })
-                .on('pointerout', () => {
-                  tankIntro.setVisible(false)
-                })
-                .on('pointermove', (pointer) => {
-                  tankIntro.updateTankIntroPosition(pointer)
-                })
-                .on('pointerup', () => {
-                  onTankClickListeners.forEach((listener) => {
-                    listener(tanksData[i])
-                  })
-                })
-                .setOrigin(0)
+              tanksButton[i]
             ]
           : []
       ])
       kuangKuangs.push(kuangKuang)
     }
 
+    const startRectangle = this.scene.add.rectangle(0, 0, GRID_SIZE * 2 + 40, GRID_SIZE, 0xe34d4d)
+      .setOrigin(0)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerup', () => {
+        onStartClickListeners.forEach((listener) => {
+          listener()
+        })
+      })
     const startButton = this.scene.add.container(840, 16, [
-      this.scene.add.rectangle(0, 0, GRID_SIZE * 2 + 40, GRID_SIZE, 0xe34d4d)
-        .setOrigin(0)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerup', () => {
-          onStartClickListeners.forEach((listener) => {
-            listener()
-          })
-        }),
+      startRectangle,
       this.scene.add.text((GRID_SIZE * 2 + 40) / 2, GRID_SIZE / 2, 'START', {
         fontFamily: '"Noto Sans TC", sans-serif',
         fontSize: '30px'
       }).setOrigin(0.5)
     ])
 
-    this.scene.add.container(0, STATUS_BAR_HEIGHT + MAP_HEIGHT, [
+    const tanksBarContainer = this.scene.add.container(0, STATUS_BAR_HEIGHT + MAP_HEIGHT, [
       this.scene.add.rectangle(0, 0, MAP_WIDTH, TANK_BAR_HEIGHT, 0x5a5a5a).setOrigin(0),
       ...kuangKuangs,
       startButton
@@ -134,6 +138,20 @@ export default class StageUI {
        */
       onStartClick (listener) {
         onStartClickListeners.push(listener)
+      },
+      lock () {
+        tanksBarContainer.setAlpha(0.5)
+        startRectangle.disableInteractive()
+        tanksButton.forEach((tankButton) => {
+          tankButton.disableInteractive()
+        })
+      },
+      unlock () {
+        tanksBarContainer.setAlpha(1)
+        startRectangle.setInteractive()
+        tanksButton.forEach((tankButton) => {
+          tankButton.setInteractive()
+        })
       }
     }
   }
@@ -260,5 +278,13 @@ export default class StageUI {
         rangeCircle.setSize(tankData.range * 0.5 * GRID_SIZE, tankData.range * 0.5 * GRID_SIZE).setOrigin(0.5)
       }
     }
+  }
+
+  lock () {
+    this.tanksBar.lock()
+  }
+
+  unlock () {
+    this.tanksBar.unlock()
   }
 }
