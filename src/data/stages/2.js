@@ -1,7 +1,7 @@
 export default {
   stage: 2,
   money: 100,
-  live: 3,
+  live: 7,
   enemyAmount: 14,
   enemyPeriod: 1200,
   mapData: {
