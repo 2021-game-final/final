@@ -275,7 +275,7 @@ export default class StageUI {
        */
       updatePreviewTank (tankData) {
         image.setTexture(tankData.imageKey)
-        rangeCircle.setSize(tankData.range * 0.5 * GRID_SIZE, tankData.range * 0.5 * GRID_SIZE).setOrigin(0.5)
+        rangeCircle.setSize(tankData.range * GRID_SIZE * 2, tankData.range * GRID_SIZE * 2).setOrigin(0.5)
       }
     }
   }

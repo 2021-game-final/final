@@ -4,23 +4,23 @@ import { GRID_SIZE } from '../../Constants'
 export default class Enemy extends GameObjects.Ellipse {
   /**
    * Creates an instance of Enemy.
-   * @param {import('phaser').Scene} scene
+   * @param {import('./StageMap').default} map
    * @param {number} rowIndex
    * @param {number} columnIndex
    * @param {import('../../data/enemies').EnemyData} enemyData
    * @param {import('phaser').Curves.Path} path
    * @memberof Enemy
    */
-  constructor (scene, rowIndex, columnIndex, enemyData, path) {
+  constructor (map, rowIndex, columnIndex, enemyData, path) {
     super(
-      scene,
+      map.scene,
       columnIndex * GRID_SIZE + (GRID_SIZE / 2),
       rowIndex * GRID_SIZE + (GRID_SIZE / 2),
-      GRID_SIZE * enemyData.size,
-      GRID_SIZE * enemyData.size,
+      GRID_SIZE * enemyData.size * 2,
+      GRID_SIZE * enemyData.size * 2,
       enemyData.color
     )
-    this.scene = scene
+    this.scene = map.scene
     this.enemyData = enemyData
     this.path = path
     this.setOrigin(0.5)
