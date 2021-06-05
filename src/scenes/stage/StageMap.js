@@ -2,6 +2,12 @@ import { STATUS_BAR_HEIGHT, GRID_SIZE, COLOR_ROAD, COLOR_GRASS, ROAD, GRASS } fr
 import Tank from './Tank'
 import Enemy from './Enemy'
 
+function delay (ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 export default class StageMap {
   /**
    *
@@ -175,14 +181,11 @@ export default class StageMap {
     this.enemies.add(enemy)
   }
 
-  addEnemies (enemyData, rowIndex, columnIndex, amount, period) {
-    let count = 0
-    const timer = setInterval(() => {
+  async addEnemies (enemyData, rowIndex, columnIndex, amount, period) {
+    this.addEnemy(enemyData, rowIndex, columnIndex)
+    for (let i = 1; i < amount; i++) {
+      await delay(period)
       this.addEnemy(enemyData, rowIndex, columnIndex)
-      count += 1
-      if (count === amount) {
-        clearInterval(timer)
-      }
-    }, period)
+    }
   }
 }
