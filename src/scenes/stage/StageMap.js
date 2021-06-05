@@ -1,6 +1,7 @@
 import { STATUS_BAR_HEIGHT, GRID_SIZE, COLOR_ROAD, COLOR_GRASS, ROAD, GRASS } from '../../Constants'
 import Tank from './Tank'
 import Enemy from './Enemy'
+import Bullet from './Bullet'
 
 function delay (ms) {
   return new Promise((resolve) => {
@@ -25,6 +26,7 @@ export default class StageMap {
     })
     this.tanks = this.scene.add.group()
     this.enemies = this.scene.add.group()
+    this.bullets = this.scene.add.group()
 
     this.mainContainer = this.scene.add.container(0, STATUS_BAR_HEIGHT)
     this._createBackground(mapData)
@@ -34,6 +36,13 @@ export default class StageMap {
   update (time, delta) {
     this.enemies.children.iterate((enemy) => {
       enemy.update(time, delta)
+    })
+    this.tanks.children.iterate((tank) => {
+      tank.lockOnEnemy(this.enemies)
+      tank.update(time)
+    })
+    this.bullets.children.iterate((bullet) => {
+      bullet.update(time, delta)
     })
   }
 
@@ -159,7 +168,7 @@ export default class StageMap {
    * @param {number} columnIndex
    */
   addTank (tankData, rowIndex, columnIndex) {
-    const tank = new Tank(this.scene, rowIndex, columnIndex, tankData)
+    const tank = new Tank(this, rowIndex, columnIndex, tankData)
     this.mainContainer.add(tank)
     this.tanks.add(tank)
     this.placingMatrix[rowIndex][columnIndex] = false
@@ -176,7 +185,7 @@ export default class StageMap {
    * @param {number} columnIndex
    */
   addEnemy (enemyData, rowIndex, columnIndex) {
-    const enemy = new Enemy(this.scene, rowIndex, columnIndex, enemyData, this.path)
+    const enemy = new Enemy(this, rowIndex, columnIndex, enemyData, this.path)
     this.mainContainer.add(enemy)
     this.enemies.add(enemy)
   }
@@ -187,5 +196,11 @@ export default class StageMap {
       await delay(period)
       this.addEnemy(enemyData, rowIndex, columnIndex)
     }
+  }
+
+  addBullet (tank, enemy) {
+    const bullet = new Bullet(this, tank, enemy)
+    this.mainContainer.add(bullet)
+    this.bullets.add(bullet)
   }
 }
