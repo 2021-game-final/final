@@ -3,6 +3,7 @@ import StageUI from './StageUI'
 import StageMap from './StageMap'
 import tanksData from '../../data/tanks/Index'
 import enemiesData from '../../data/enemies/Index'
+import stagesData from '../../data/stages/Index'
 
 export default class StageScene extends Scene {
   preload () {
@@ -11,6 +12,12 @@ export default class StageScene extends Scene {
     })
   }
 
+  /**
+   *
+   *
+   * @param {import('../../data/stages/Index').StageData} stageData
+   * @memberof StageScene
+   */
   create (stageData) {
     // 放置模式：placing
     // 戰鬥模式：battling
@@ -18,9 +25,9 @@ export default class StageScene extends Scene {
     // 遊戲成功：gameWinner
     this._status = 'placing'
 
-    this._stage = 0
-    this._money = 0
-    this._live = 0
+    this._stage = 1
+    this._money = 1
+    this._live = 1
     this._previewTankData = null
     this.stageData = stageData
 
@@ -93,9 +100,18 @@ export default class StageScene extends Scene {
       // 砲台跟START都不能按
       this.ui.lock()
     } else if (value === 'gameLoser') {
-      //
+      this.scene.start('loseScene')
+      console.log('you are loser')
     } else if (value === 'gameWinner') {
-      //
+      if (stagesData.length === this.stage) {
+        this.scene.start('winScene')
+      } else {
+        const nextStageData = stagesData[this.stage]
+        this.scene.start('stageScene', {
+          ...nextStageData,
+          money: nextStageData.money + this.money
+        })
+      }
     }
   }
 
@@ -122,8 +138,14 @@ export default class StageScene extends Scene {
   }
 
   set live (value) {
+    if (this.live <= 0) {
+      return
+    }
     this._live = value
     this.ui.statusBar.updateLiveText(this._live)
+    if (value <= 0) {
+      this.status = 'gameLoser'
+    }
   }
 
   get previewTankData () {
