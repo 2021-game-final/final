@@ -1,4 +1,5 @@
 import { Scene } from 'phaser'
+import bgm from '../../assets/BgmUI_Title.mp3'
 import StageUI from './StageUI'
 import StageMap from './StageMap'
 import tanksData from '../../data/tanks/Index'
@@ -10,6 +11,7 @@ export default class StageScene extends Scene {
     tanksData.forEach((tank) => {
       this.load.image(tank.imageKey, tank.image)
     })
+    this.load.audio('bgm', [bgm])
   }
 
   /**
@@ -19,6 +21,8 @@ export default class StageScene extends Scene {
    * @memberof StageScene
    */
   create (stageData) {
+    this.sound.add('bgm', { loop: true }).play()
+
     // 放置模式：placing
     // 戰鬥模式：battling
     // 遊戲失敗：gameLoser
