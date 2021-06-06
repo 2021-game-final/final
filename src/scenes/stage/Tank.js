@@ -15,7 +15,7 @@ export default class Tank extends GameObjects.Sprite {
     this.setOrigin(0.5)
     this.map = map
     this.scene = map.scene
-    this.data = tankData
+    this.tankData = tankData
     this.lastAttackTime = -1
     this.rangeDistance = tankData.range * GRID_SIZE
     this.lockedOnEnemy = undefined
@@ -26,7 +26,7 @@ export default class Tank extends GameObjects.Sprite {
     const angle = PMath.Angle.Between(this.x, this.y, this.lockedOnEnemy.x, this.lockedOnEnemy.y)
     this.setRotation(angle + PMath.PI2 * 1 / 4)
 
-    if (time - this.lastAttackTime > 1000 / this.data.speed) {
+    if (time - this.lastAttackTime > 1000 / this.tankData.speed) {
       this.attack(this.lockedOnEnemy)
       this.lastAttackTime = time
     }
@@ -40,13 +40,15 @@ export default class Tank extends GameObjects.Sprite {
    */
   lockOnEnemy (enemies) {
     this.lockedOnEnemy = enemies.getChildren().find((enemy) => {
+      if (!enemy.active) return false
       const distance = PMath.Distance.Between(this.x, this.y, enemy.x, enemy.y)
-      return this.rangeDistance + enemy.enemyData.size * GRID_SIZE >= distance
+      if (distance <= this.rangeDistance + enemy.enemyData.size * GRID_SIZE) return true
+      return false
     })
   }
 
   attack (enemy) {
-    console.log(this.data.name, 'attack')
+    console.log(this.tankData.name, 'attack')
     this.map.addBullet(this, enemy)
   }
 }

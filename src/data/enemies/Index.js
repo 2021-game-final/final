@@ -8,6 +8,7 @@ import enemy3 from './3'
  * @property {number} speed
  * @property {number} color
  * @property {number} size
+ * @property {number} money
 */
 export default [
   enemy1,
