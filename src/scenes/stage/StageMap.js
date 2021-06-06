@@ -13,7 +13,7 @@ export default class StageMap {
   /**
    *
    *
-   * @param {import('phaser').Scene} scene
+   * @param {import('./StageScene').default} scene
    * @param {import('../../data/stages/Index').MapData} mapData
    * @memberof StageMap
    */
@@ -44,6 +44,12 @@ export default class StageMap {
     this.bullets.children.iterate((bullet) => {
       bullet.update(time, delta)
     })
+    const hasAliveEnemy = this.enemies.getChildren().some((enemy) => {
+      return enemy.active
+    })
+    if (!hasAliveEnemy && this.enemies.getLength() === this.scene.stageData.enemyAmount) {
+      this.scene.status = 'gameWinner'
+    }
   }
 
   /**

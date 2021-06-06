@@ -22,10 +22,26 @@ export default class Enemy extends GameObjects.Ellipse {
     )
     this.scene = map.scene
     this.enemyData = enemyData
+    this._live = enemyData.live
     this.path = path
     this.setOrigin(0.5)
     this.follower = { t: 0, vec: new PMath.Vector2() }
     this.startOnPath()
+  }
+
+  get live () {
+    return this._live
+  }
+
+  set live (value) {
+    if (!this.active) return
+    this._live = value
+    if (value <= 0) {
+      this.setActive(false)
+      this.setVisible(false)
+      this.scene.money += this.enemyData.money
+      console.log('enemy die')
+    }
   }
 
   startOnPath () {
@@ -35,6 +51,7 @@ export default class Enemy extends GameObjects.Ellipse {
   }
 
   update (time, delta) {
+    if (!this.active) return
     delta = delta / 1000
     this.follower.t += delta * this.enemyData.speed / (this.path.getLength() / GRID_SIZE)
     this.path.getPoint(this.follower.t, this.follower.vec)
@@ -43,6 +60,8 @@ export default class Enemy extends GameObjects.Ellipse {
 
     if (this.follower.t >= 1) {
       this.setActive(false)
+      this.setVisible(false)
+      this.scene.live -= 1
     }
   }
 }
