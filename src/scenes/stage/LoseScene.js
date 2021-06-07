@@ -14,7 +14,7 @@ class LoseScene extends Scene {
       this.add.rectangle(0, 0, 100, 50, 0x202020)
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => {
-          this.scene.start('welcomeScene')
+          this.scene.start('welcomeScene', false)
         }),
       this.add.text(0, 0, '回到主畫面').setOrigin(0.5)
     ])

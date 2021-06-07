@@ -1,8 +1,13 @@
 import { Scene } from 'phaser'
 import stagesData from '../../data/stages/Index'
+import bgm from '../../assets/BgmUI_Title.mp3'
 
 class WelcomeScene extends Scene {
-  create () {
+  preload () {
+    this.load.audio('bgm', [bgm])
+  }
+
+  create (isPlay) {
     const { width: w, height: h } = this.game.config
     this.add.rectangle(w / 2, h / 2, w, h, 0x3e3e3e)
 
@@ -16,6 +21,9 @@ class WelcomeScene extends Scene {
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => {
           this.scene.start('stageScene', stagesData[0])
+          if (isPlay) {
+            this.sound.add('bgm', { loop: true }).play()
+          }
         }),
       this.add.text(0, 0, '開始').setOrigin(0.5)
     ])

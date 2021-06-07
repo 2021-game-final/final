@@ -28,5 +28,5 @@ import { MAP_WIDTH, MAP_HEIGHT, STATUS_BAR_HEIGHT, TANK_BAR_HEIGHT } from './Con
   game.scene.add('loseScene', new LoseScene())
   game.scene.add('winScene', new WinScene())
 
-  game.scene.start('welcomeScene')
+  game.scene.start('welcomeScene', true)
 })()
